@@ -1,0 +1,51 @@
+{
+  "name": "RDPBIL — 16GB Desktop Dev",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "hostRequirements": {
+    "cpus": 4,
+    "memory": "16gb",
+    "storage": "64gb"
+  },
+  "remoteUser": "vscode",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "22"
+    },
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.12"
+    },
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+  "forwardPorts": [6080],
+  "portsAttributes": {
+    "6080": {
+      "label": "RDPBIL Linux Desktop (noVNC)",
+      "protocol": "http",
+      "onAutoForward": "openBrowser",
+      "visibility": "private"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "editor.formatOnSave": true
+      },
+      "extensions": [
+        "ms-vscode-remote.remote-containers",
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "github.vscode-github-actions",
+        "eamodio.gitlens"
+      ]
+    }
+  },
+  "postCreateCommand": "bash .devcontainer/start-desktop.sh",
+  "postStartCommand": "bash .devcontainer/start-desktop.sh",
+  "shutdownAction": "stopContainer"
+}
