@@ -26,9 +26,19 @@ if ! pgrep -f "x11vnc.*5900" >/dev/null 2>&1; then
   sleep 2
 fi
 
+# Prepare a noVNC web root that opens directly at the forwarded port.
+NOVNC_ROOT=/tmp/rdpbil-novnc
+mkdir -p "$NOVNC_ROOT"
+if [ -f /usr/share/novnc/vnc.html ]; then
+  cp -f /usr/share/novnc/vnc.html "$NOVNC_ROOT/index.html"
+else
+  echo "noVNC vnc.html not found" >&2
+  exit 1
+fi
+
 # noVNC exposes the desktop through the Codespaces forwarded port.
 if ! pgrep -f "websockify.*6080" >/dev/null 2>&1; then
-  websockify --web=/usr/share/novnc/ 6080 localhost:5900 >/tmp/rdpbil-novnc.log 2>&1 &
+  websockify --web="$NOVNC_ROOT" 6080 localhost:5900 >/tmp/rdpbil-novnc.log 2>&1 &
   sleep 2
 fi
 
