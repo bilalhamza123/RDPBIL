@@ -26,21 +26,25 @@ if ! pgrep -f "x11vnc.*5900" >/dev/null 2>&1; then
   sleep 2
 fi
 
-# Prepare a noVNC web root that opens directly at the forwarded port.
+# Prepare a complete noVNC web root, including all JS/CSS/assets.
 NOVNC_ROOT=/tmp/rdpbil-novnc
+rm -rf "$NOVNC_ROOT"
 mkdir -p "$NOVNC_ROOT"
-if [ -f /usr/share/novnc/vnc.html ]; then
-  cp -f /usr/share/novnc/vnc.html "$NOVNC_ROOT/index.html"
+if [ -d /usr/share/novnc ]; then
+  cp -a /usr/share/novnc/. "$NOVNC_ROOT/"
 else
-  echo "noVNC vnc.html not found" >&2
+  echo "noVNC directory not found" >&2
   exit 1
 fi
 
-# noVNC exposes the desktop through the Codespaces forwarded port.
-if ! pgrep -f "websockify.*6080" >/dev/null 2>&1; then
+# Open noVNC directly at the forwarded port root.
+cp -f "$NOVNC_ROOT/vnc.html" "$NOVNC_ROOT/index.html"
+
+# Start websockify if it is not already listening.
+if ! pgrep -f "websockify.*6080.*localhost:5900" >/dev/null 2>&1; then
   websockify --web="$NOVNC_ROOT" 6080 localhost:5900 >/tmp/rdpbil-novnc.log 2>&1 &
-  sleep 2
+  sleep 3
 fi
 
 echo "RDPBIL desktop is ready."
-echo "Open forwarded port 6080 to use the XFCE desktop in your browser."
+echo "XFCE: :1 | VNC: localhost:5900 | noVNC: http://localhost:6080"
