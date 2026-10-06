@@ -17,22 +17,100 @@
 <div id="detail" class="detail"><div class="modal"><div style="display:flex;justify-content:space-between"><h2 id="modalTitle">Prospect</h2><button id="close" class="btn danger">Fermer</button></div><div class="modalgrid">
 <div><label>Nom</label><input id="f_name"></div><div><label>Commune</label><input id="f_commune"></div><div><label>Email</label><input id="f_email"></div><div><label>Téléphone</label><input id="f_phone"></div><div><label>WhatsApp</label><input id="f_whatsapp"></div><div><label>Site web</label><input id="f_site"></div><div><label>Statut prospect</label><select id="f_status"><option>new</option><option>researched</option><option>contacted</option><option>replied</option><option>qualified</option><option>proposal</option><option>won</option><option>lost</option><option>do_not_contact</option></select></div><div><label>Statut site</label><select id="f_webstatus"><option>no_website</option><option>social_only</option><option>website_found</option><option>unknown</option><option>needs_verification</option></select></div><div><label>Prochaine relance</label><input id="f_follow" type="datetime-local"></div><div><label>Canal</label><input id="f_channel"></div><div class="full"><label>Notes</label><textarea id="f_notes"></textarea></div><div class="full"><label>Message FR</label><textarea id="f_msg"></textarea></div></div><button id="save" class="btn primary" style="margin-top:15px">Enregistrer</button><div id="saveMsg" class="msg"></div></div></div>
 <script>
-const URL='https://iponadqbqryxbhlgktak.supabase.co',KEY='sb_publishable_JHWb-gb6QcBYmPdXvZoBpA_aKPQa0au',OWNER_EMAIL='bilalbilalhamza23@gmail.com';
-const H={'apikey':KEY,'Content-Type':'application/json'};
+const SUPABASE_URL='https://iponadqbqryxbhlgktak.supabase.co';
+const SUPABASE_KEY='sb_publishable_JHWb-gb6QcBYmPdXvZoBpA_aKPQa0au';
+const OWNER_EMAIL='bilalbilalhamza23@gmail.com';
+const $=id=>document.getElementById(id);
+const H={'apikey':SUPABASE_KEY,'Content-Type':'application/json'};
 let token='',records=[],current=null;
-async function api(path,opt={}){opt.headers={...(opt.headers||{}),...H,Authorization:'Bearer '+token};const r=await fetch(URL+path,opt);if(!r.ok)throw new Error(await r.text());return r.status===204?null:r.json()}
-function show(id,on=true){document.getElementById(id).classList.toggle('hidden',!on)}
-function msg(id,t){const e=document.getElementById(id);e.textContent=t;e.style.display='block'}
-async function login(){try{const email=loginEmail.value.trim().toLowerCase();if(email!==OWNER_EMAIL)throw new Error('Accès réservé au compte propriétaire Splendor Technologie.');if(!loginPassword.value)throw new Error('Entrez votre mot de passe.');const r=await fetch(URL+'/auth/v1/token?grant_type=password',{method:'POST',headers:H,body:JSON.stringify({email:email,password:loginPassword.value})});if(!r.ok)throw new Error('Identifiants incorrects');const x=await r.json();token=x.access_token;show('login',false);show('app',true);show('logout',true);await load()}catch(e){msg('loginMsg',e.message)}}
-async function load(){try{records=await api('/rest/v1/ecole_web_prospects?select=*&order=id.desc');buildStats();buildCommunes();render();if(!records.length)msg('appMsg','Aucun prospect visible avec ce compte. Vérifiez que vous utilisez le compte propriétaire autorisé.')}catch(e){msg('appMsg','Impossible de charger la base. Accès réservé au compte propriétaire. '+e.message)}}
-function buildStats(){const c=k=>records.filter(x=>x.prospect_status===k).length;total.textContent=records.length;nosite.textContent=records.filter(x=>x.website_status==='no_website').length;emails.textContent=records.filter(x=>x.email&&x.email.trim()).length;document.getElementById('new').textContent=c('new');contacted.textContent=c('contacted');replied.textContent=c('replied')}
-function buildCommunes(){const v=[...new Set(records.map(x=>x.commune).filter(Boolean))].sort();commune.innerHTML='<option value="">Toutes les communes</option>'+v.map(x=>'<option>'+esc(x)+'</option>').join('')}
-function filtered(){const a=(q.value||'').toLowerCase(),s=status.value,w=site.value,c=commune.value;return records.filter(x=>(!a||[x.school_name,x.school_name_ar,x.commune,x.district,x.email,x.phone].some(v=>String(v||'').toLowerCase().includes(a)))&&(!s||x.prospect_status===s)&&(!w||x.website_status===w)&&(!c||x.commune===c))}
-function render(){const list=filtered();count.textContent=list.length+' résultat(s)';rows.innerHTML=list.map(x=>'<tr><td><b>'+esc(x.school_name)+'</b><br><span class="muted">'+esc(x.school_name_ar||'')+'</span></td><td>'+esc(x.commune||'')+'<br>'+esc(x.district||'')+'</td><td>'+linkMail(x.email)+ '<br>'+esc(x.phone||'')+'</td><td>'+link(x.website_url,'Site')+' '+link(x.social_url,'Social')+'<br><span class="badge">'+esc(x.website_status)+'</span></td><td><span class="badge">'+esc(x.prospect_status)+'</span></td><td>'+formatDate(x.next_followup_at)+'</td><td><div class="actions"><button class="btn secondary" onclick="edit('+x.id+')">Modifier</button>'+((x.email&&x.prospect_status!=='do_not_contact')?'<a class="btn secondary" href="mailto:'+escAttr(x.email)+'?subject=Proposition%20Splendor%20Technologie">Email</a>':'')+'</div></td></tr>').join('')}
-function link(u,t){return u?'<a href="'+escAttr(u)+'" target="_blank" rel="noopener">'+t+'</a>':''}function linkMail(e){return e?'<a href="mailto:'+escAttr(e)+'">'+esc(e)+'</a>':''}function formatDate(x){return x?new Date(x).toLocaleString('fr-FR'):'—'}function esc(s){return String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}function escAttr(s){return esc(s)}
-function edit(id){current=records.find(x=>x.id===id);if(!current)return;modalTitle.textContent=current.school_name;f_name.value=current.school_name||'';f_commune.value=current.commune||'';f_email.value=current.email||'';f_phone.value=current.phone||'';f_whatsapp.value=current.whatsapp||'';f_site.value=current.website_url||'';f_status.value=current.prospect_status;f_webstatus.value=current.website_status;f_follow.value=current.next_followup_at?new Date(current.next_followup_at).toISOString().slice(0,16):'';f_channel.value=current.contact_channel||'';f_notes.value=current.notes||'';f_msg.value=current.personalized_message_fr||'';detail.style.display='block'}
-close.onclick=()=>detail.style.display='none';
-async function save(){try{const patch={school_name:f_name.value.trim(),commune:f_commune.value.trim()||null,email:f_email.value.trim()||null,phone:f_phone.value.trim()||null,whatsapp:f_whatsapp.value.trim()||null,website_url:f_site.value.trim()||null,prospect_status:f_status.value,website_status:f_webstatus.value,next_followup_at:f_follow.value?new Date(f_follow.value).toISOString():null,contact_channel:f_channel.value.trim()||null,notes:f_notes.value.trim()||null,personalized_message_fr:f_msg.value.trim()||null,updated_at:new Date().toISOString()};await api('/rest/v1/ecole_web_prospects?id=eq.'+current.id,{method:'PATCH',headers:{Prefer:'return=minimal'},body:JSON.stringify(patch)});msg('saveMsg','Prospect mis à jour.');await load()}catch(e){msg('saveMsg','Erreur : '+e.message)}}
-async function signup(){try{const email=loginEmail.value.trim().toLowerCase();if(email!==OWNER_EMAIL)throw new Error('Seul le compte propriétaire peut être créé ici.');if(loginPassword.value.length<8)throw new Error('Le mot de passe doit contenir au moins 8 caractères.');const r=await fetch(URL+'/auth/v1/signup',{method:'POST',headers:H,body:JSON.stringify({email:email,password:loginPassword.value})});if(!r.ok)throw new Error(await r.text());msg('loginMsg','Accès propriétaire créé. Si Supabase demande une confirmation email, confirmez le message reçu puis connectez-vous.')}catch(e){msg('loginMsg','Création impossible : '+e.message)}}
-loginBtn.onclick=login;signupBtn.onclick=signup;save.onclick=save;refresh.onclick=load;q.oninput=render;status.onchange=render;site.onchange=render;commune.onchange=render;logout.onclick=async()=>{try{await fetch(URL+'/auth/v1/logout',{method:'POST',headers:H})}catch(e){}token='';records=[];show('app',false);show('logout',false);show('login',true);loginPassword.value='';};loginPassword.onkeydown=e=>{if(e.key==='Enter')login()};
+function show(id,on){$(id).classList.toggle('hidden',!on)}
+function msg(id,t){const e=$(id);e.textContent=t;e.style.display='block'}
+async function request(path,options={}){
+ const headers=Object.assign({},H,options.headers||{});
+ if(token) headers.Authorization='Bearer '+token;
+ const r=await fetch(SUPABASE_URL+path,Object.assign({},options,{headers}));
+ const text=await r.text();
+ if(!r.ok) throw new Error(text||('HTTP '+r.status));
+ return text?JSON.parse(text):null;
+}
+async function login(){
+ try{
+  const email=$('loginEmail').value.trim().toLowerCase(), password=$('loginPassword').value;
+  if(email!==OWNER_EMAIL) throw new Error('Utilisez l’adresse propriétaire autorisée.');
+  if(!password) throw new Error('Entrez votre mot de passe.');
+  const x=await request('/auth/v1/token?grant_type=password',{method:'POST',body:JSON.stringify({email,password})});
+  if(!x.access_token) throw new Error('Connexion refusée : aucun jeton reçu.');
+  token=x.access_token; sessionStorage.setItem('splendor_token',token);
+  show('login',false);show('app',true);show('logout',true);await load();
+ }catch(e){msg('loginMsg','Connexion impossible : '+e.message)}
+}
+async function load(){
+ try{
+  records=await request('/rest/v1/ecole_web_prospects?select=*&order=id.desc');
+  buildStats();buildCommunes();render();
+ }catch(e){msg('appMsg','Erreur de chargement : '+e.message)}
+}
+function buildStats(){
+ const count=s=>records.filter(x=>x.prospect_status===s).length;
+ $('total').textContent=records.length;
+ $('nosite').textContent=records.filter(x=>x.website_status==='no_website').length;
+ $('emails').textContent=records.filter(x=>x.email&&String(x.email).trim()).length;
+ $('new').textContent=count('new');$('contacted').textContent=count('contacted');$('replied').textContent=count('replied');
+}
+function buildCommunes(){
+ const vals=[...new Set(records.map(x=>x.commune).filter(Boolean))].sort();
+ $('commune').innerHTML='<option value="">Toutes les communes</option>'+vals.map(x=>'<option>'+esc(x)+'</option>').join('');
+}
+function filtered(){
+ const a=$('q').value.toLowerCase(),s=$('status').value,w=$('site').value,c=$('commune').value;
+ return records.filter(x=>(!a||[x.school_name,x.school_name_ar,x.commune,x.district,x.email,x.phone].some(v=>String(v||'').toLowerCase().includes(a)))&&(!s||x.prospect_status===s)&&(!w||x.website_status===w)&&(!c||x.commune===c));
+}
+function render(){
+ const list=filtered();$('count').textContent=list.length+' résultat(s)';
+ $('rows').innerHTML=list.map(x=>'<tr><td><b>'+esc(x.school_name)+'</b><br><span class="muted">'+esc(x.school_name_ar||'')+'</span></td><td>'+esc(x.commune||'')+'<br>'+esc(x.district||'')+'</td><td>'+mail(x.email)+'<br>'+esc(x.phone||'')+'</td><td>'+lnk(x.website_url,'Site')+' '+lnk(x.social_url,'Social')+'<br><span class="badge">'+esc(x.website_status)+'</span></td><td><span class="badge">'+esc(x.prospect_status)+'</span></td><td>'+date(x.next_followup_at)+'</td><td><button class="btn secondary editBtn" data-id="'+x.id+'">Modifier</button></td></tr>').join('');
+ document.querySelectorAll('.editBtn').forEach(b=>b.addEventListener('click',()=>edit(Number(b.dataset.id))));
+}
+function esc(s){return String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+function attr(s){return esc(s)}
+function lnk(u,t){return u?'<a href="'+attr(u)+'" target="_blank" rel="noopener">'+t+'</a>':''}
+function mail(e){return e?'<a href="mailto:'+attr(e)+'">'+esc(e)+'</a>':''}
+function date(x){return x?new Date(x).toLocaleString('fr-FR'):'—'}
+function edit(id){
+ current=records.find(x=>x.id===id);if(!current)return;
+ $('modalTitle').textContent=current.school_name||'Prospect';
+ $('f_name').value=current.school_name||'';$('f_commune').value=current.commune||'';$('f_email').value=current.email||'';
+ $('f_phone').value=current.phone||'';$('f_whatsapp').value=current.whatsapp||'';$('f_site').value=current.website_url||'';
+ $('f_status').value=current.prospect_status||'new';$('f_webstatus').value=current.website_status||'unknown';
+ $('f_follow').value=current.next_followup_at?new Date(current.next_followup_at).toISOString().slice(0,16):'';
+ $('f_channel').value=current.contact_channel||'';$('f_notes').value=current.notes||'';$('f_msg').value=current.personalized_message_fr||'';
+ $('detail').style.display='block';
+}
+async function save(){
+ try{
+  const patch={school_name:$('f_name').value.trim(),commune:$('f_commune').value.trim()||null,email:$('f_email').value.trim()||null,phone:$('f_phone').value.trim()||null,whatsapp:$('f_whatsapp').value.trim()||null,website_url:$('f_site').value.trim()||null,prospect_status:$('f_status').value,website_status:$('f_webstatus').value,next_followup_at:$('f_follow').value?new Date($('f_follow').value).toISOString():null,contact_channel:$('f_channel').value.trim()||null,notes:$('f_notes').value.trim()||null,personalized_message_fr:$('f_msg').value.trim()||null,updated_at:new Date().toISOString()};
+  await request('/rest/v1/ecole_web_prospects?id=eq.'+current.id,{method:'PATCH',headers:{Prefer:'return=minimal'},body:JSON.stringify(patch)});
+  msg('saveMsg','Prospect mis à jour.');await load();
+ }catch(e){msg('saveMsg','Erreur : '+e.message)}
+}
+async function signup(){
+ try{
+  const email=$('loginEmail').value.trim().toLowerCase(),password=$('loginPassword').value;
+  if(email!==OWNER_EMAIL)throw new Error('Utilisez l’adresse propriétaire autorisée.');
+  if(password.length<8)throw new Error('Le mot de passe doit contenir au moins 8 caractères.');
+  const x=await request('/auth/v1/signup',{method:'POST',body:JSON.stringify({email,password})});
+  msg('loginMsg',x.access_token?'Accès créé. Vous pouvez vous connecter.':'Compte créé. Si une confirmation email est demandée, confirmez-la puis connectez-vous.');
+ }catch(e){msg('loginMsg','Création impossible : '+e.message)}
+}
+async function logout(){
+ try{await request('/auth/v1/logout',{method:'POST'})}catch(e){}
+ token='';sessionStorage.removeItem('splendor_token');records=[];show('app',false);show('logout',false);show('login',true);
+}
+window.addEventListener('DOMContentLoaded',()=>{
+ $('loginBtn').addEventListener('click',login);$('signupBtn').addEventListener('click',signup);$('save').addEventListener('click',save);$('refresh').addEventListener('click',load);$('logout').addEventListener('click',logout);
+ $('close').addEventListener('click',()=>{$('detail').style.display='none'});
+ ['q','status','site','commune'].forEach(id=>$(id).addEventListener('input',render));
+ $('status').addEventListener('change',render);$('site').addEventListener('change',render);$('commune').addEventListener('change',render);
+ $('loginPassword').addEventListener('keydown',e=>{if(e.key==='Enter')login()});
+ const saved=sessionStorage.getItem('splendor_token');if(saved){token=saved;show('login',false);show('app',true);show('logout',true);load().catch(()=>logout())}
+});
 </script></body></html>
