@@ -68,7 +68,7 @@ function filtered(){
 function render(){
  const list=filtered();$('count').textContent=list.length+' résultat(s)';
  $('rows').innerHTML=list.map(x=>'<tr><td><b>'+esc(x.school_name)+'</b><br><span class="muted">'+esc(x.school_name_ar||'')+'</span></td><td>'+esc(x.commune||'')+'<br>'+esc(x.district||'')+'</td><td>'+mail(x.email)+'<br>'+esc(x.phone||'')+'</td><td>'+lnk(x.website_url,'Site')+' '+lnk(x.social_url,'Social')+'<br><span class="badge">'+esc(x.website_status)+'</span></td><td><span class="badge">'+esc(x.prospect_status)+'</span></td><td>'+date(x.next_followup_at)+'</td><td><button class="btn secondary editBtn" data-id="'+x.id+'">Modifier</button></td></tr>').join('');
- document.querySelectorAll('.editBtn').forEach(b=>b.addEventListener('click',()=>edit(Number(b.dataset.id))));
+ document.querySelectorAll('.editBtn').forEach(b=>b.addEventListener('click',()=>edit(b.dataset.id)));
 }
 function esc(s){return String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
 function attr(s){return esc(s)}
