@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Splendor Technologie — Dashboard Cliniques</title>
+<style>
+:root{--navy:#12345a;--blue:#1769aa;--teal:#16a6a1;--bg:#f2f7fb;--card:#fff;--text:#17283c;--muted:#64748b;--line:#dbe4ee;--gold:#f2b84b}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text)}button,input,select{font:inherit}.top{background:linear-gradient(110deg,#102b4e,#1769aa 68%,#16a6a1);color:#fff;padding:16px 4%;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;box-shadow:0 5px 20px #102b4e22}.brand{font-weight:800}.wrap{max-width:1400px;margin:auto;padding:28px 4%}.hero{margin:24px 0 26px;padding:34px clamp(20px,4vw,48px);border-radius:20px;color:#fff;background:linear-gradient(100deg,rgba(12,35,66,.96),rgba(17,89,139,.83) 60%,rgba(22,166,161,.62)),url('https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1800&q=85') center/cover;box-shadow:0 14px 35px #0b1f3a22}.hero h1{font-size:clamp(1.6rem,3.5vw,2.5rem);line-height:1.15;margin:0 0 10px}.hero p{max-width:760px;margin:0;color:#eaf6ff}.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.voice{background:#d8f6f1;color:#075e5a}.lang{background:#fff;color:#12345a;border:1px solid #d5e8f2}.top-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.auth,.panel,.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 6px 22px rgba(15,35,60,.05)}.auth{max-width:430px;margin:60px auto;padding:28px}.auth h1{margin-top:0}.field{margin:12px 0}.field label{display:block;font-weight:700;margin-bottom:5px}.field input,.field select{width:100%;padding:11px;border:1px solid #cbd5e1;border-radius:9px}.btn{border:0;border-radius:9px;padding:11px 15px;font-weight:700;cursor:pointer}.primary{background:var(--blue);color:#fff}.btn:hover{filter:brightness(.97);transform:translateY(-1px)}.stat{border-top:3px solid var(--teal)}.stat:nth-child(2){border-top-color:#f2b84b}.stat:nth-child(3){border-top-color:#5b8def}.stat:nth-child(4){border-top-color:#7c6ce7}.stat:nth-child(5){border-top-color:#20a477}.stat:nth-child(6){border-top-color:#e18c53}.secondary{background:#eaf2ff;color:#135ab0}.danger{background:#ffecec;color:#a12626}.hidden{display:none!important}.stats{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin-bottom:22px}.stat{padding:17px}.stat b{display:block;font-size:1.7rem}.stat span{font-size:.85rem;color:var(--muted)}.panel{padding:18px;margin-bottom:20px}.filters{display:grid;grid-template-columns:2fr 1fr 1fr 1fr auto;gap:10px}.filters input,.filters select{padding:11px;border:1px solid #cbd5e1;border-radius:9px}.tablewrap{overflow:auto}.table{width:100%;border-collapse:collapse;min-width:1050px}.table th,.table td{padding:11px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;font-size:.9rem}.table th{background:#f8fafc;position:sticky;top:0}.badge{display:inline-block;padding:4px 8px;border-radius:999px;background:#edf2f7;font-size:.78rem}.actions{display:flex;gap:6px;flex-wrap:wrap}.msg{padding:10px;margin:10px 0;border-radius:8px;background:#edf8f3;color:#12633d;display:none}.muted{color:var(--muted)}.detail{display:none;position:fixed;inset:0;background:rgba(5,18,35,.55);padding:5%;z-index:30}.modal{background:#fff;max-width:850px;max-height:90vh;overflow:auto;margin:auto;border-radius:16px;padding:25px}.modalgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.modalgrid label{display:block;font-weight:700;margin:0 0 5px}.quicklinks{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 16px}.quicklinks a{padding:8px 10px;background:#eaf2ff;border-radius:8px;text-decoration:none;color:#135ab0;font-weight:700}.sectionlabel{grid-column:1/-1;font-weight:800;color:#1769aa;border-bottom:1px solid var(--line);padding:8px 0 4px;margin-top:4px}.modal textarea{width:100%;min-height:110px}.modal input,.modal select,.modal textarea{padding:10px;border:1px solid #cbd5e1;border-radius:8px}.full{grid-column:1/-1}@media(max-width:900px){.stats{grid-template-columns:repeat(2,1fr)}.filters{grid-template-columns:1fr}.modalgrid{grid-template-columns:1fr}.hero{padding:26px 20px}.top{align-items:flex-start}.brand{max-width:100%}.toolbar .btn{flex:1}}@media(max-width:420px){.stats{gap:8px}.stat{padding:12px}.stat b{font-size:1.4rem}.wrap{padding:18px 4%}}
+</style></head><body>
+<header class="top"><div class="brand">✦ SPLENDOR TECHNOLOGIE — Clinique Data</div><div class="top-actions"><a class="btn secondary" href="./index.html" style="text-decoration:none">Écoles</a><a class="btn secondary" href="./cliniques.html" style="text-decoration:none">Cliniques</a><button id="langBtn" class="btn lang" type="button">العربية</button><button id="logout" class="btn secondary hidden" data-fr="Déconnexion" data-ar="تسجيل الخروج">Déconnexion</button></div></header>
+<main class="wrap"><section class="hero"><h1 data-fr="Gérez vos prospects cliniques en un seul endroit" data-ar="أدر بيانات العيادات من مكان واحد">Gérez vos prospects cliniques en un seul endroit</h1><p data-fr="Recherche rapide, suivi commercial et gestion pratique sur ordinateur ou téléphone." data-ar="بحث سريع ومتابعة تجارية وإدارة سهلة عبر الكمبيوتر أو الهاتف.">Recherche rapide, suivi commercial et gestion pratique sur ordinateur ou téléphone.</p></section>
+<section id="login" class="auth"><h1 data-fr="Accès privé" data-ar="دخول خاص">Accès privé</h1><p class="muted" data-fr="Connectez-vous pour gérer la base des prospects cliniques." data-ar="سجّل الدخول لإدارة قاعدة بيانات العيادات.">Connectez-vous pour gérer la base des prospects cliniques.</p><div class="field"><label data-fr="Email" data-ar="البريد الإلكتروني">Email</label><input id="loginEmail" type="email" autocomplete="email"></div><div class="field"><label data-fr="Mot de passe" data-ar="كلمة المرور">Mot de passe</label><input id="loginPassword" type="password" autocomplete="current-password"></div><button id="loginBtn" class="btn primary" data-fr="Se connecter" data-ar="تسجيل الدخول">Se connecter</button> <button id="signupBtn" class="btn secondary" data-fr="Créer mon accès" data-ar="إنشاء حساب">Créer mon accès</button> <button id="resetBtn" class="btn secondary" type="button" data-fr="Mot de passe oublié ?" data-ar="نسيت كلمة المرور؟">Mot de passe oublié ?</button><div id="loginMsg" class="msg"></div></section>
+<section id="app" class="hidden">
+<div class="stats">
+<div class="stat"><b id="total">0</b><span data-fr="Total prospects" data-ar="إجمالي المؤسسات">Total prospects</span></div><div class="stat"><b id="nosite">0</b><span data-fr="Sans site" data-ar="بدون موقع">Sans site</span></div><div class="stat"><b id="emails">0</b><span data-fr="Emails" data-ar="البريد الإلكتروني">Emails</span></div><div class="stat"><b id="new">0</b><span data-fr="Nouveaux" data-ar="جديد">Nouveaux</span></div><div class="stat"><b id="contacted">0</b><span data-fr="Contactés" data-ar="تم التواصل">Contactés</span></div><div class="stat"><b id="replied">0</b><span data-fr="Réponses" data-ar="الردود">Réponses</span></div>
+</div>
+<div class="panel"><div class="filters"><div class="toolbar"><input id="q" placeholder="Rechercher clinique, commune, email…" data-fr-placeholder="Rechercher clinique, commune, email…" data-ar-placeholder="ابحث عن مؤسسة أو بلدية أو بريد إلكتروني…"><button id="voiceBtn" class="btn voice" type="button" title="Recherche vocale">🎙 <span data-fr="Recherche vocale" data-ar="بحث صوتي">Recherche vocale</span></button></div><select id="status"><option value="">Tous les statuts</option><option>new</option><option>researched</option><option>contacted</option><option>replied</option><option>qualified</option><option>proposal</option><option>won</option><option>lost</option><option>do_not_contact</option></select><select id="site"><option value="">Tous les sites</option><option value="no_website_confirmed">Sans site</option><option value="social_only">Réseaux sociaux seulement</option><option value="website_found">Site trouvé</option><option value="needs_verification">À vérifier</option></select><select id="commune"><option value="">Toutes les communes</option></select><button id="refresh" class="btn secondary" data-fr="Actualiser" data-ar="تحديث">Actualiser</button></div><div id="appMsg" class="msg"></div></div>
+<div class="panel"><div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap"><h2 style="margin:0" data-fr="Prospects" data-ar="العيادات">Prospects</h2><div class="toolbar"><span class="muted" id="count"></span><button id="exportBtn" class="btn secondary" type="button">Exporter CSV</button></div></div><div class="tablewrap"><table class="table"><thead><tr><th data-fr="Clinique" data-ar="المؤسسة">Clinique</th><th data-fr="Zone" data-ar="المنطقة">Zone</th><th data-fr="Contact" data-ar="الاتصال">Contact</th><th data-fr="Web" data-ar="الموقع">Web</th><th data-fr="Statut" data-ar="الحالة">Statut</th><th data-fr="Relance" data-ar="المتابعة">Relance</th><th data-fr="Actions" data-ar="الإجراءات">Actions</th></tr></thead><tbody id="rows"></tbody></table></div></div>
+</section></main>
+<div id="detail" class="detail"><div class="modal"><div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap"><h2 id="modalTitle">Fiche clinique</h2><button id="close" class="btn danger" data-fr="Fermer" data-ar="إغلاق">Fermer</button></div><div id="quicklinks" class="quicklinks"></div><div class="modalgrid">
+<div class="sectionlabel">Identification</div><div><label>Nom de la clinique</label><input id="f_name"></div><div><label>Type de clinique</label><input id="f_name_ar"></div><div><label>Wilaya</label><input id="f_wilaya"></div><div><label>Commune</label><input id="f_commune"></div><div><label>Quartier / zone</label><input id="f_district"></div><div class="full"><label>Adresse complète</label><textarea id="f_address"></textarea></div>
+<div class="sectionlabel">Coordonnées et présence en ligne</div><div><label>Email</label><input id="f_email" type="email"></div><div><label>Téléphone</label><input id="f_phone"></div><div><label>WhatsApp</label><input id="f_whatsapp"></div><div><label>Site web</label><input id="f_site"></div><div><label>Réseau social</label><input id="f_social"></div><div><label>Source de la fiche (URL)</label><input id="f_source"></div><div><label>Statut du site</label><select id="f_webstatus"><option>no_website</option><option>social_only</option><option>website_found</option><option>unknown</option><option>needs_verification</option></select></div><div><label>Source du contact</label><input id="f_contactsource"></div>
+<div class="sectionlabel">Suivi commercial</div><div><label>Statut du prospect</label><select id="f_status"><option>new</option><option>researched</option><option>contacted</option><option>replied</option><option>qualified</option><option>proposal</option><option>won</option><option>lost</option><option>do_not_contact</option></select></div><div><label>Canal de contact</label><input id="f_channel"></div><div><label>Dernier contact</label><input id="f_last" type="datetime-local"></div><div><label>Prochaine relance</label><input id="f_follow" type="datetime-local"></div><div><label>Créé le</label><input id="f_created" readonly></div><div><label>Modifié le</label><input id="f_updated" readonly></div><div class="full"><label>Notes</label><textarea id="f_notes"></textarea></div><div class="full"><label>Message personnalisé (français)</label><textarea id="f_msg"></textarea></div><div class="full"><label>Message personnalisé (arabe)</label><textarea id="f_msg_ar"></textarea></div></div><button id="save" class="btn primary" style="margin-top:15px">Enregistrer les modifications</button><div id="saveMsg" class="msg"></div></div></div>
+<script>
+let currentLang="fr";
+function setLanguage(lang){currentLang=lang;document.documentElement.lang=lang;document.documentElement.dir=lang==="ar"?"rtl":"ltr";document.querySelectorAll("[data-fr][data-ar]").forEach(el=>{el.textContent=el.dataset[lang]||el.dataset.fr});document.querySelectorAll("[data-fr-placeholder][data-ar-placeholder]").forEach(el=>el.placeholder=el.dataset[lang+"Placeholder"]||el.dataset.frPlaceholder);$("langBtn").textContent=lang==="fr"?"العربية":"Français";$("langBtn").setAttribute("aria-label",lang==="fr"?"Switch to Arabic":"التبديل إلى الفرنسية");$("q").dir=lang==="ar"?"rtl":"auto";}
+function voiceSearch(){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){msg("appMsg","La recherche vocale n’est pas disponible dans ce navigateur. Essayez Chrome sur téléphone.");return}const r=new SR();r.lang=currentLang==="ar"?"ar-DZ":"fr-FR";r.interimResults=false;r.maxAlternatives=1;r.onstart=()=>msg("appMsg",currentLang==="ar"?"استمع الآن… تكلّم للبحث.":"Écoute en cours… dites le nom à rechercher.");r.onresult=e=>{$("q").value=e.results[0][0].transcript;render();msg("appMsg",(currentLang==="ar"?"نتائج البحث عن: ":"Recherche pour : ")+$("q").value)};r.onerror=()=>msg("appMsg",currentLang==="ar"?"تعذّر استخدام الميكروفون. تحقق من إذن المتصفح.":"Microphone indisponible. Vérifiez l’autorisation du navigateur.");r.start()}
+const SUPABASE_URL='https://iponadqbqryxbhlgktak.supabase.co';
+const SUPABASE_KEY='sb_publishable_JHWb-gb6QcBYmPdXvZoBpA_aKPQa0au';
+const OWNER_EMAIL='bilalbilalhamza23@gmail.com';
+const $=id=>document.getElementById(id);
+const H={'apikey':SUPABASE_KEY,'Content-Type':'application/json'};
+let token='',records=[],current=null;
+function show(id,on){$(id).classList.toggle('hidden',!on)}
+function msg(id,t){const e=$(id);e.textContent=t;e.style.display='block'}
+async function request(path,options={}){
+ const headers=Object.assign({},H,options.headers||{});
+ if(token) headers.Authorization='Bearer '+token;
+ const r=await fetch(SUPABASE_URL+path,Object.assign({},options,{headers}));
+ const text=await r.text();
+ if(!r.ok) throw new Error(text||('HTTP '+r.status));
+ return text?JSON.parse(text):null;
+}
+async function login(){
+ try{
+  const email=$('loginEmail').value.trim().toLowerCase(), password=$('loginPassword').value;
+  if(email!==OWNER_EMAIL) throw new Error('Utilisez l’adresse propriétaire autorisée.');
+  if(!password) throw new Error('Entrez votre mot de passe.');
+  const x=await request('/auth/v1/token?grant_type=password',{method:'POST',body:JSON.stringify({email,password})});
+  if(!x.access_token) throw new Error('Connexion refusée : aucun jeton reçu.');
+  token=x.access_token; sessionStorage.setItem('splendor_token',token);
+  show('login',false);show('app',true);show('logout',true);await load();
+ }catch(e){const detail=String(e.message||'');msg('loginMsg',detail.includes('invalid_credentials')?'Email ou mot de passe incorrect. Si c’est votre première connexion, cliquez sur « Créer mon accès » puis confirmez l’email. Si le compte existe déjà, utilisez « Mot de passe oublié ? ».':'Connexion impossible : '+detail)}
+}
+async function load(){
+ try{
+  records=await request('/rest/v1/clinique_web_prospects?select=*&order=id.desc');
+  buildStats();buildCommunes();render();
+ }catch(e){msg('appMsg','Erreur de chargement : '+e.message)}
+}
+function buildStats(){
+ const count=s=>records.filter(x=>x.prospect_status===s).length;
+ $('total').textContent=records.length;
+ $('nosite').textContent=records.filter(x=>x.website_status==='no_website').length;
+ $('emails').textContent=records.filter(x=>x.email&&String(x.email).trim()).length;
+ $('new').textContent=count('new');$('contacted').textContent=count('contacted');$('replied').textContent=count('replied');
+}
+function buildCommunes(){
+ const vals=[...new Set(records.map(x=>x.commune).filter(Boolean))].sort();
+ $('commune').innerHTML='<option value="">Toutes les communes</option>'+vals.map(x=>'<option>'+esc(x)+'</option>').join('');
+}
+function filtered(){
+ const a=$('q').value.toLowerCase(),s=$('status').value,w=$('site').value,c=$('commune').value;
+ return records.filter(x=>(!a||[x.clinic_name,x.clinic_type,x.commune,x.district,x.email,x.phone].some(v=>String(v||'').toLowerCase().includes(a)))&&(!s||x.prospect_status===s)&&(!w||x.website_status===w)&&(!c||x.commune===c));
+}
+function render(){
+ const list=filtered();$('count').textContent=list.length+' résultat(s)';
+ $('rows').innerHTML=list.map(x=>'<tr><td><b>'+esc(x.clinic_name)+'</b><br><span class="muted">'+esc(x.clinic_type||'')+'</span></td><td>'+esc(x.commune||'')+'<br>'+esc(x.district||'')+'</td><td>'+mail(x.email)+'<br>'+esc(x.phone||'')+'</td><td>'+lnk(x.website_url,'Site')+' '+lnk(x.social_url,'Social')+'<br><span class="badge">'+esc(x.website_status)+'</span></td><td><span class="badge">'+esc(x.prospect_status)+'</span></td><td>'+date(x.next_followup_at)+'</td><td><button class="btn secondary editBtn" data-id="'+x.id+'">Fiche complète</button></td></tr>').join('');
+ document.querySelectorAll('.editBtn').forEach(b=>b.addEventListener('click',()=>edit(b.dataset.id)));
+}
+function esc(s){return String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+function attr(s){return esc(s)}
+function lnk(u,t){return u?'<a href="'+attr(u)+'" target="_blank" rel="noopener">'+t+'</a>':''}
+function mail(e){return e?'<a href="mailto:'+attr(e)+'">'+esc(e)+'</a>':''}
+function date(x){return x?new Date(x).toLocaleString('fr-FR'):'—'}
+function toLocal(v){if(!v)return '';const d=new Date(v);return Number.isNaN(d.getTime())?'':new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,16)}
+function setVal(id,v){$(id).value=v==null?'':v}
+function edit(id){
+ current=records.find(x=>String(x.id)===String(id));if(!current)return;
+ $('modalTitle').textContent=current.clinic_name||'Fiche clinique';
+ setVal('f_name',current.clinic_name);setVal('f_name_ar',current.clinic_type);setVal('f_wilaya',current.wilaya);setVal('f_commune',current.commune);setVal('f_district',current.district);setVal('f_address',current.address);
+ setVal('f_email',current.email);setVal('f_phone',current.phone);setVal('f_whatsapp',current.whatsapp);setVal('f_site',current.website_url);setVal('f_social',current.social_url);setVal('f_source',current.source_url);setVal('f_contactsource',current.contact_source);
+ setVal('f_status',current.prospect_status||'new');setVal('f_webstatus',current.website_status||'unknown');setVal('f_follow',toLocal(current.next_followup_at));setVal('f_last',toLocal(current.last_contacted_at));setVal('f_channel',current.contact_channel);setVal('f_notes',current.notes);setVal('f_msg',current.personalized_message_fr);setVal('f_msg_ar',current.personalized_message_ar);setVal('f_created',current.created_at?date(current.created_at):'');setVal('f_updated',current.updated_at?date(current.updated_at):'');
+ const links=[];if(current.website_url)links.push('<a href="'+attr(current.website_url)+'" target="_blank" rel="noopener">Ouvrir le site</a>');if(current.email)links.push('<a href="mailto:'+attr(current.email)+'">Envoyer un email</a>');if(current.phone)links.push('<a href="tel:'+attr(current.phone)+'">Appeler</a>');if(current.whatsapp)links.push('<a href="https://wa.me/'+attr(String(current.whatsapp).replace(/[^0-9]/g,''))+'" target="_blank" rel="noopener">WhatsApp</a>');if(current.social_url)links.push('<a href="'+attr(current.social_url)+'" target="_blank" rel="noopener">Réseaux sociaux</a>');if(current.source_url)links.push('<a href="'+attr(current.source_url)+'" target="_blank" rel="noopener">Voir la source</a>');$('quicklinks').innerHTML=links.join('');
+ $('saveMsg').style.display='none';$('detail').style.display='block';
+}
+async function save(){
+ try{
+  const patch={clinic_name:$('f_name').value.trim(),clinic_type:$('f_name_ar').value.trim()||null,wilaya:$('f_wilaya').value.trim()||null,commune:$('f_commune').value.trim()||null,district:$('f_district').value.trim()||null,address:$('f_address').value.trim()||null,email:$('f_email').value.trim()||null,phone:$('f_phone').value.trim()||null,whatsapp:$('f_whatsapp').value.trim()||null,website_url:$('f_site').value.trim()||null,social_url:$('f_social').value.trim()||null,source_url:$('f_source').value.trim()||null,contact_source:$('f_contactsource').value.trim()||null,prospect_status:$('f_status').value,website_status:$('f_webstatus').value,last_contacted_at:$('f_last').value?new Date($('f_last').value).toISOString():null,next_followup_at:$('f_follow').value?new Date($('f_follow').value).toISOString():null,contact_channel:$('f_channel').value.trim()||null,notes:$('f_notes').value.trim()||null,personalized_message_fr:$('f_msg').value.trim()||null,personalized_message_ar:$('f_msg_ar').value.trim()||null,updated_at:new Date().toISOString()};
+  await request('/rest/v1/clinique_web_prospects?id=eq.'+current.id,{method:'PATCH',headers:{Prefer:'return=minimal'},body:JSON.stringify(patch)});
+  msg('saveMsg','Prospect mis à jour.');await load();
+ }catch(e){msg('saveMsg','Erreur : '+e.message)}
+}
+function exportCSV(){
+ const list=filtered();if(!list.length){msg('appMsg','Aucun prospect à exporter pour ces filtres.');return}
+ const cols=['id','clinic_name','clinic_type','wilaya','commune','district','address','phone','whatsapp','email','website_url','social_url','website_status','source_url','contact_source','prospect_status','contact_channel','last_contacted_at','next_followup_at','notes','personalized_message_fr','personalized_message_ar','created_at','updated_at'];
+ const cell=v=>'"'+String(v??'').replace(/"/g,'""')+'"';const csv='\ufeff'+[cols.join(';'),...list.map(r=>cols.map(k=>cell(r[k])).join(';'))].join('\r\n');const url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));const a=document.createElement('a');a.href=url;a.download='splendor_prospects_filtres.csv';a.click();URL.revokeObjectURL(url);msg('appMsg',list.length+' prospect(s) exporté(s) en CSV.');
+}
+async function resetPassword(){
+ try{
+  const email=$('loginEmail').value.trim().toLowerCase();
+  if(email!==OWNER_EMAIL)throw new Error('Saisissez l’adresse propriétaire autorisée : '+OWNER_EMAIL);
+  const r=await request('/auth/v1/recover',{method:'POST',body:JSON.stringify({email})});
+  msg('loginMsg','Si un compte existe pour cette adresse et que la récupération est activée, un email de réinitialisation sera envoyé. Vérifiez aussi les courriers indésirables.');
+ }catch(e){msg('loginMsg','Réinitialisation impossible : '+e.message)}
+}
+async function signup(){
+ try{
+  const email=$('loginEmail').value.trim().toLowerCase(),password=$('loginPassword').value;
+  if(email!==OWNER_EMAIL)throw new Error('Utilisez l’adresse propriétaire autorisée.');
+  if(password.length<8)throw new Error('Le mot de passe doit contenir au moins 8 caractères.');
+  const x=await request('/auth/v1/signup',{method:'POST',body:JSON.stringify({email,password})});
+  msg('loginMsg',x.access_token?'Accès créé. Vous pouvez vous connecter.':'Compte créé. Si une confirmation email est demandée, confirmez-la puis connectez-vous.');
+ }catch(e){msg('loginMsg','Création impossible : '+e.message)}
+}
+async function logout(){
+ try{await request('/auth/v1/logout',{method:'POST'})}catch(e){}
+ token='';sessionStorage.removeItem('splendor_token');records=[];show('app',false);show('logout',false);show('login',true);
+}
+window.addEventListener('DOMContentLoaded',()=>{
+ $('loginBtn').addEventListener('click',login);$('signupBtn').addEventListener('click',signup);$('resetBtn').addEventListener('click',resetPassword);$('save').addEventListener('click',save);$('refresh').addEventListener('click',load);$('exportBtn').addEventListener('click',exportCSV);$('logout').addEventListener('click',logout);$('langBtn').addEventListener('click',()=>setLanguage(currentLang==='fr'?'ar':'fr'));$('voiceBtn').addEventListener('click',voiceSearch);setLanguage('fr');
+ $('close').addEventListener('click',()=>{$('detail').style.display='none'});
+ ['q','status','site','commune'].forEach(id=>$(id).addEventListener('input',render));
+ $('status').addEventListener('change',render);$('site').addEventListener('change',render);$('commune').addEventListener('change',render);
+ $('loginPassword').addEventListener('keydown',e=>{if(e.key==='Enter')login()});
+ const saved=sessionStorage.getItem('splendor_token');if(saved){token=saved;show('login',false);show('app',true);show('logout',true);load().catch(()=>logout())}
+});
+</script></body></html>
