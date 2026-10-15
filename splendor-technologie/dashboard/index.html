@@ -6,7 +6,7 @@
 </style></head><body>
 <header class="top"><div class="brand">✦ SPLENDOR TECHNOLOGIE — ECole Data</div><div class="top-actions"><button id="langBtn" class="btn lang" type="button">العربية</button><button id="logout" class="btn secondary hidden" data-fr="Déconnexion" data-ar="تسجيل الخروج">Déconnexion</button></div></header>
 <main class="wrap"><section class="hero"><h1 data-fr="Gérez vos prospects scolaires en un seul endroit" data-ar="أدر بيانات المؤسسات التعليمية من مكان واحد">Gérez vos prospects scolaires en un seul endroit</h1><p data-fr="Recherche rapide, suivi commercial et gestion pratique sur ordinateur ou téléphone." data-ar="بحث سريع ومتابعة تجارية وإدارة سهلة عبر الكمبيوتر أو الهاتف.">Recherche rapide, suivi commercial et gestion pratique sur ordinateur ou téléphone.</p></section>
-<section id="login" class="auth"><h1 data-fr="Accès privé" data-ar="دخول خاص">Accès privé</h1><p class="muted" data-fr="Connectez-vous pour gérer la base des prospects scolaires." data-ar="سجّل الدخول لإدارة قاعدة بيانات المؤسسات التعليمية.">Connectez-vous pour gérer la base des prospects scolaires.</p><div class="field"><label data-fr="Email" data-ar="البريد الإلكتروني">Email</label><input id="loginEmail" type="email" autocomplete="email"></div><div class="field"><label data-fr="Mot de passe" data-ar="كلمة المرور">Mot de passe</label><input id="loginPassword" type="password" autocomplete="current-password"></div><button id="loginBtn" class="btn primary" data-fr="Se connecter" data-ar="تسجيل الدخول">Se connecter</button> <button id="signupBtn" class="btn secondary" data-fr="Créer mon accès" data-ar="إنشاء حساب">Créer mon accès</button><div id="loginMsg" class="msg"></div></section>
+<section id="login" class="auth"><h1 data-fr="Accès privé" data-ar="دخول خاص">Accès privé</h1><p class="muted" data-fr="Connectez-vous pour gérer la base des prospects scolaires." data-ar="سجّل الدخول لإدارة قاعدة بيانات المؤسسات التعليمية.">Connectez-vous pour gérer la base des prospects scolaires.</p><div class="field"><label data-fr="Email" data-ar="البريد الإلكتروني">Email</label><input id="loginEmail" type="email" autocomplete="email"></div><div class="field"><label data-fr="Mot de passe" data-ar="كلمة المرور">Mot de passe</label><input id="loginPassword" type="password" autocomplete="current-password"></div><button id="loginBtn" class="btn primary" data-fr="Se connecter" data-ar="تسجيل الدخول">Se connecter</button> <button id="signupBtn" class="btn secondary" data-fr="Créer mon accès" data-ar="إنشاء حساب">Créer mon accès</button> <button id="resetBtn" class="btn secondary" type="button" data-fr="Mot de passe oublié ?" data-ar="نسيت كلمة المرور؟">Mot de passe oublié ?</button><div id="loginMsg" class="msg"></div></section>
 <section id="app" class="hidden">
 <div class="stats">
 <div class="stat"><b id="total">0</b><span data-fr="Total prospects" data-ar="إجمالي المؤسسات">Total prospects</span></div><div class="stat"><b id="nosite">0</b><span data-fr="Sans site" data-ar="بدون موقع">Sans site</span></div><div class="stat"><b id="emails">0</b><span data-fr="Emails" data-ar="البريد الإلكتروني">Emails</span></div><div class="stat"><b id="new">0</b><span data-fr="Nouveaux" data-ar="جديد">Nouveaux</span></div><div class="stat"><b id="contacted">0</b><span data-fr="Contactés" data-ar="تم التواصل">Contactés</span></div><div class="stat"><b id="replied">0</b><span data-fr="Réponses" data-ar="الردود">Réponses</span></div>
@@ -45,7 +45,7 @@ async function login(){
   if(!x.access_token) throw new Error('Connexion refusée : aucun jeton reçu.');
   token=x.access_token; sessionStorage.setItem('splendor_token',token);
   show('login',false);show('app',true);show('logout',true);await load();
- }catch(e){msg('loginMsg','Connexion impossible : '+e.message)}
+ }catch(e){const detail=String(e.message||'');msg('loginMsg',detail.includes('invalid_credentials')?'Email ou mot de passe incorrect. Si c’est votre première connexion, cliquez sur « Créer mon accès » puis confirmez l’email. Si le compte existe déjà, utilisez « Mot de passe oublié ? ».':'Connexion impossible : '+detail)}
 }
 async function load(){
  try{
@@ -95,6 +95,14 @@ async function save(){
   msg('saveMsg','Prospect mis à jour.');await load();
  }catch(e){msg('saveMsg','Erreur : '+e.message)}
 }
+async function resetPassword(){
+ try{
+  const email=$('loginEmail').value.trim().toLowerCase();
+  if(email!==OWNER_EMAIL)throw new Error('Saisissez l’adresse propriétaire autorisée : '+OWNER_EMAIL);
+  const r=await request('/auth/v1/recover',{method:'POST',body:JSON.stringify({email})});
+  msg('loginMsg','Si un compte existe pour cette adresse et que la récupération est activée, un email de réinitialisation sera envoyé. Vérifiez aussi les courriers indésirables.');
+ }catch(e){msg('loginMsg','Réinitialisation impossible : '+e.message)}
+}
 async function signup(){
  try{
   const email=$('loginEmail').value.trim().toLowerCase(),password=$('loginPassword').value;
@@ -109,7 +117,7 @@ async function logout(){
  token='';sessionStorage.removeItem('splendor_token');records=[];show('app',false);show('logout',false);show('login',true);
 }
 window.addEventListener('DOMContentLoaded',()=>{
- $('loginBtn').addEventListener('click',login);$('signupBtn').addEventListener('click',signup);$('save').addEventListener('click',save);$('refresh').addEventListener('click',load);$('logout').addEventListener('click',logout);$('langBtn').addEventListener('click',()=>setLanguage(currentLang==='fr'?'ar':'fr'));$('voiceBtn').addEventListener('click',voiceSearch);setLanguage('fr');
+ $('loginBtn').addEventListener('click',login);$('signupBtn').addEventListener('click',signup);$('resetBtn').addEventListener('click',resetPassword);$('save').addEventListener('click',save);$('refresh').addEventListener('click',load);$('logout').addEventListener('click',logout);$('langBtn').addEventListener('click',()=>setLanguage(currentLang==='fr'?'ar':'fr'));$('voiceBtn').addEventListener('click',voiceSearch);setLanguage('fr');
  $('close').addEventListener('click',()=>{$('detail').style.display='none'});
  ['q','status','site','commune'].forEach(id=>$(id).addEventListener('input',render));
  $('status').addEventListener('change',render);$('site').addEventListener('change',render);$('commune').addEventListener('change',render);
